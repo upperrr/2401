@@ -29,6 +29,7 @@ public class Post {
 
     private String title;
     private String contents;
+    private int use_yn = 1;
     @CreatedDate
     @ToString.Exclude
     private LocalDateTime created_at;
