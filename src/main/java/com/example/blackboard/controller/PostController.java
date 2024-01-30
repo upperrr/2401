@@ -8,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class PostController {
 
@@ -54,5 +56,13 @@ public class PostController {
     @DeleteMapping("/posts{idx}")
     public void deletePost(@PathVariable Long idx) {
         postService.deletePost(idx);
+    }
+
+    /**
+     * Search
+     * */
+    @GetMapping("/search")
+    public ResponseEntity<List<Post>> searchPosts(@RequestParam String keyword) {
+        return ResponseEntity.ok(postService.searchPosts(keyword));
     }
 }

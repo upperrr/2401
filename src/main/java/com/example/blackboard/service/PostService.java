@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -56,5 +57,12 @@ public class PostService {
     @Transactional //@Modifying 사용을 위해
     public void deletePost(Long idx) {
         postRepository.setUseYnToZero(idx);
+    }
+
+    /**
+     * Search
+     * */
+    public List<Post> searchPosts(String keyword) {
+        return postRepository.search(keyword);
     }
 }
