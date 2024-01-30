@@ -3,9 +3,7 @@ package com.example.blackboard.domain;
 //import jakarta.persistence.*;
 import javax.persistence.*;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -20,16 +18,10 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter
-@ToString
-public class Post implements Cloneable{
-    @Override
-    public Post clone() {
-        try {
-            return (Post) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
-        }
-    }
+@ToString           //문자열 자동생성
+@NoArgsConstructor  //기본생성자
+@AllArgsConstructor //파라미터가 있는 생성자 자동생성
+public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,4 +37,12 @@ public class Post implements Cloneable{
     @ToString.Exclude
     private LocalDateTime updated_at;
     private String updated_by;
+
+    public Post(Long idx, String title, String contents, String created_by) {
+        this.idx = idx;
+        this.title = title;
+        this.contents = contents;
+        this.created_by = created_by;
+    }
+
 }

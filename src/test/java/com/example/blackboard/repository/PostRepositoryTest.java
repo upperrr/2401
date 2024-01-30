@@ -78,30 +78,28 @@ public class PostRepositoryTest {
      * */
     private Post updatePost(Long idx, String user, String newTitle, String newContents) {
         Post post = postRepository.findById(idx).orElse(null);
-        Post existingPost = null;
         if(post != null && user.equals(post.getCreated_by())) {
-            existingPost = post.clone(); //FIXME
             post.setTitle(newTitle);
             post.setContents(newContents);
-            postRepository.save(post);
+            return postRepository.save(post);
         }
-        return existingPost;
+        return null;
     }
 
     @Test
     public void testUpdatePost() {
         // 이미 저장되어 있는 Post 객체의 idx와 created_by
-        Long existingIdx = 5L;
+        Long existingIdx = 6L;
         String existingUser = "User";
 
-        // 저장되어 있는 Post 객체를 찾아서 제목과 내용을 수정하고 그 결과를 저장
-        Post existingPost = updatePost(existingIdx, existingUser, "수정된 제목", "수정된 내용");
-
-        // 수정 전의 Post 객체가 존재하는지 확인
+        // 저장되어 있는 Post 객체를 찾아서 제목과 내용을 수정하기 전에 기존 정보를 복사
+        Post existingPost = postRepository.findById(existingIdx).orElse(null);
         assertNotNull(existingPost);
-
-        // 수정 전의 Post 객체를 출력
         System.out.println("수정 전의 게시글: " + existingPost);
+        Post oldPost = new Post(existingPost.getIdx(), existingPost.getTitle(), existingPost.getContents(), existingPost.getCreated_by());
+
+        // 수정 작업
+        updatePost(existingIdx, existingUser, "수정된 제목", "수정된 내용");
 
         // 데이터베이스에서 수정된 Post 객체를 다시 가져오기
         Post retrievedPost = postRepository.findById(existingIdx).orElse(null);
